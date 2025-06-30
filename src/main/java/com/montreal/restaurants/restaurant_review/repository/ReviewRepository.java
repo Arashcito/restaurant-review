@@ -12,6 +12,7 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByRestaurantId(Long restaurantId);
     List<Review> findByReviewId(Long reviewId);
+    List<Review> findByUserId(Long userId);
 
     /**
      * Calculates the average rating for a restaurant
@@ -19,8 +20,15 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
      * @return Average rating as Double (null if no reviews exist)
      */
     @Query("SELECT AVG(r.rating) FROM Review r where r.restaurant.id = :restaurantId")
-    Double findAverageRating(@Param("restaurantId") Long restaurantId);
+    Double findAverageRatingByRestaurantId(@Param("restaurantId") Long restaurantId);
 
+    /**
+     * Calculates the average rating for a restaurant (alternative method name)
+     * @param restaurantId The ID of the restaurant
+     * @return Average rating as Double (null if no reviews exist)
+     */
+    @Query("SELECT AVG(r.rating) FROM Review r where r.restaurant.id = :restaurantId")
+    Double findAverageRating(@Param("restaurantId") Long restaurantId);
 
     /**
      * Counts the number of reviews for a restaurant
@@ -29,6 +37,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
      */
     @Query("SELECT COUNT(r) FROM Review r WHERE r.restaurant.id = :restaurantId")
     Long countByRestaurantId(@Param("restaurantId") Long restaurantId);
-
 
 }
