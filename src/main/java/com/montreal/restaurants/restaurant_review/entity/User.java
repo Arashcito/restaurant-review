@@ -1,5 +1,6 @@
 package com.montreal.restaurants.restaurant_review.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class User {
      * If a user is deleted, all their reviews are automatically deleted too (cascade)
     * */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Review> reviews;
 
     public User(String username, String email, String password) {

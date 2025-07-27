@@ -1,5 +1,6 @@
 package com.montreal.restaurants.restaurant_review.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -54,6 +55,7 @@ public class Restaurant {
      * Save restaurant → Saves all reviews too
      * */
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Review> reviews;
 
     public Restaurant() {
