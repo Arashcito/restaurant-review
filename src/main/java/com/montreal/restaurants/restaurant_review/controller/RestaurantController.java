@@ -2,6 +2,7 @@ package com.montreal.restaurants.restaurant_review.controller;
 
 import com.montreal.restaurants.restaurant_review.entity.Restaurant;
 import com.montreal.restaurants.restaurant_review.service.RestaurantService;
+import com.montreal.restaurants.restaurant_review.service.GooglePlacesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class RestaurantController {
 
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    private GooglePlacesService googlePlacesService;
 
     @GetMapping
     public ResponseEntity<List<Restaurant>> getAllRestaurants() {
@@ -52,5 +56,17 @@ public class RestaurantController {
     public ResponseEntity<List<Restaurant>> getRestaurantsByPriceRange(@PathVariable String priceRange) {
         List<Restaurant> restaurants = restaurantService.getRestaurantsByPriceRange(priceRange);
         return ResponseEntity.ok(restaurants);
+    }
+
+    @GetMapping("/api/search")
+    public ResponseEntity<List<Restaurant>> searchFromGooglePlaces(@RequestParam String query) {
+        List<Restaurant> restaurants = googlePlacesService.searchRestaurantsInMontreal(query);
+        return ResponseEntity.ok(restaurants);
+    }
+
+    @GetMapping("/api/details/{placeId}")
+    public ResponseEntity<Restaurant> getRestaurantDetails(@PathVariable String placeId) {
+        Restaurant restaurant = googlePlacesService.getRestaurantDetails(placeId);
+        return ResponseEntity.ok(restaurant);
     }
 } 
